@@ -8,7 +8,7 @@ struct ele {
     ele * prawy;
 };
 
-// Zadanie 1
+// Exercise 1
 
 void preorder(ele * root){
     if(root){
@@ -34,20 +34,18 @@ void inorder(ele * root){
     }
 }
 
-// Zadanie 2
+// Exercise 2
 
 int countNodes(ele * root){
 
     if(!root)
         return 0;
-    else{
-        int nodeCounter = countNodes(root->lewy) + countNodes(root->prawy) + 1;
-        return nodeCounter;
-    }
+    else
+        return countNodes(root->lewy) + countNodes(root->prawy) + 1;
 }
 
 
-// Zadanie 3
+// Exercise 3
 
 int wysokosc(ele * root){
     if(!root)
@@ -63,7 +61,7 @@ int wysokosc(ele * root){
 }
 
 
-// Zadanie 4 - przy użyciu postorder
+// Exercise 4 - with postorder
 
 ele * addressMaxInTree(ele * root){
     ele * result = root;
@@ -78,7 +76,7 @@ ele * addressMaxInTree(ele * root){
     return result;
 }
 
-// Zadanie 6 - przy założeniu, że w drzewie BST na lewo są wartości mniejsze, a na prawo - większe
+// Exercise 6
 
 ele * searchInBST(int n, ele * root){
 
@@ -95,7 +93,9 @@ ele * searchInBST(int n, ele * root){
     }
 }
 
-// Zadanie 7 - przy założeniu, że w drzewie BST na lewo są wartości mniejsze, a na prawo - większe
+// Exercise 7
+
+// Adding to tree is so simple...
 
 void addToBST(int n, ele * &root){
     if(root){
@@ -110,21 +110,23 @@ void addToBST(int n, ele * &root){
     }
 }
 
+//... but removing from tree is not simple.
 
-bool removeFromBST(int n, ele * root){
+ele * minChildFromRight(ele * &root){
+    ele * current = root;
+    while(current->lewy != 0)
+        current = current->lewy;
 
-    ele * parent = 0;
-    bool isOnTheLeft;
+    return current;
+}
+
+void removeFromBST(int n, ele * &root){
 
     if(root){
         if(n > root->dane){
-            parent = root;
-            isOnTheLeft = 0;
             removeFromBST(n, root->prawy);
         }
         else if(n < root->dane){
-            parent = root;
-            isOnTheLeft = 1;
             removeFromBST(n, root->lewy);
         }
         else{
@@ -132,23 +134,22 @@ bool removeFromBST(int n, ele * root){
             if(!root->lewy && !root->prawy){
                 delete root;
                 root = 0;
-                return 1;
+                return;
             }else if(!root->lewy)
                 tmp = root->prawy;
             else if(!root->prawy)
                 tmp = root->lewy;
             else
-                tmp = minChildFromRight(root->prawy)
+                tmp = minChildFromRight(root->prawy);
 
-            tmp->lewy = root->lewy;
-            tmp->prawy = root->prawy;
+            root->dane = tmp->dane;
 
+            removeFromBST(tmp->dane, root->prawy);
         }
-
     }
 }
 
-// Zadanie 8
+// Exercise 8
 
 void cleanTree(ele * &root){
     if(root){
@@ -181,6 +182,10 @@ int main()
     cout<<countNodes(korzonek)<<"\n";
     cout<<searchInBST(18, korzonek)->dane;
     cout<<"\n"<<wysokosc(korzonek)<<"\n";
+
+    removeFromBST(12, korzonek);
+    preorder(korzonek);
+    cout<<"\n";
 
     ele * root_01;
     root_01 = 0;
