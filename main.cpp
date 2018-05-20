@@ -36,20 +36,32 @@ void inorder(ele * root){
 
 // Zadanie 2
 
-void recurentCount(int &counter, ele * root){
-    if(root){
-        counter++;
-        recurentCount(counter, root->lewy);
-        recurentCount(counter, root->prawy);
+int countNodes(ele * root){
+
+    if(!root)
+        return 0;
+    else{
+        int nodeCounter = countNodes(root->lewy) + countNodes(root->prawy) + 1;
+        return nodeCounter;
     }
 }
 
-int countNodes(ele * root){
-    int counter = 0;
-    recurentCount(counter, root);
 
-    return counter;
+// Zadanie 3
+
+int wysokosc(ele * root){
+    if(!root)
+        return 0;
+    else{
+        int lewaWys = wysokosc(root->lewy);
+        int prawaWys = wysokosc(root->prawy);
+
+        if (lewaWys > prawaWys)
+            return lewaWys + 1;
+        else return prawaWys + 1;
+    }
 }
+
 
 // Zadanie 4 - przy użyciu postorder
 
@@ -123,6 +135,27 @@ int main()
 
     cout<<countNodes(korzonek)<<"\n";
     cout<<searchInBST(18, korzonek)->dane;
+    cout<<"\n"<<wysokosc(korzonek)<<"\n";
+
+    ele * root_01;
+    root_01 = 0;
+
+    addToBST(70, root_01);
+    addToBST(90, root_01);
+    addToBST(80, root_01);
+    addToBST(170, root_01);
+    addToBST(200, root_01);
+    addToBST(30, root_01);
+    addToBST(15, root_01);
+    addToBST(11, root_01);
+    addToBST(45, root_01);
+    addToBST(33, root_01);
+    addToBST(36, root_01);
+    addToBST(50, root_01);
+
+    cout<<"\n"<<wysokosc(root_01);
+    cout<<"\n"<<countNodes(root_01);
+
 
     return 0;
 }
