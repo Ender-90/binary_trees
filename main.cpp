@@ -110,8 +110,53 @@ void addToBST(int n, ele * &root){
     }
 }
 
-void removeFromBST(int n, ele * &root){
 
+bool removeFromBST(int n, ele * root){
+
+    ele * parent = 0;
+    bool isOnTheLeft;
+
+    if(root){
+        if(n > root->dane){
+            parent = root;
+            isOnTheLeft = 0;
+            removeFromBST(n, root->prawy);
+        }
+        else if(n < root->dane){
+            parent = root;
+            isOnTheLeft = 1;
+            removeFromBST(n, root->lewy);
+        }
+        else{
+            ele * tmp = 0;
+            if(!root->lewy && !root->prawy){
+                delete root;
+                root = 0;
+                return 1;
+            }else if(!root->lewy)
+                tmp = root->prawy;
+            else if(!root->prawy)
+                tmp = root->lewy;
+            else
+                tmp = minChildFromRight(root->prawy)
+
+            tmp->lewy = root->lewy;
+            tmp->prawy = root->prawy;
+
+        }
+
+    }
+}
+
+// Zadanie 8
+
+void cleanTree(ele * &root){
+    if(root){
+        cleanTree(root->lewy);
+        cleanTree(root->prawy);
+        delete root;
+        root = 0;
+    }
 }
 
 int main()
@@ -155,7 +200,6 @@ int main()
 
     cout<<"\n"<<wysokosc(root_01);
     cout<<"\n"<<countNodes(root_01);
-
 
     return 0;
 }
